@@ -32,7 +32,7 @@ DISPLAY_TZ = ZoneInfo("Europe/Rome")
 # Sentiment via Hugging Face Inference API (FinBERT gira sui server HF, non in locale:
 # nessun modello scaricato qui). Serve un token gratuito, vedi README.
 HF_MODEL = "ProsusAI/finbert"
-HF_API_URL = f"https://api-inference.huggingface.co/models/{HF_MODEL}"
+HF_API_URL = f"https://router.huggingface.co/hf-inference/models/{HF_MODEL}"
 HF_TOKEN = os.environ.get("HF_TOKEN", "")
 
 
