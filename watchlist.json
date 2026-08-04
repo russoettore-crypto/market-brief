@@ -1,0 +1,48 @@
+{
+  "indices": [
+    {"ticker": "^GSPC",     "name": "S&P 500"},
+    {"ticker": "^IXIC",     "name": "Nasdaq Composite"},
+    {"ticker": "^DJI",      "name": "Dow Jones"},
+    {"ticker": "^STOXX50E", "name": "Euro Stoxx 50"},
+    {"ticker": "FTSEMIB.MI","name": "FTSE MIB"},
+    {"ticker": "BTC-USD",   "name": "Bitcoin"},
+    {"ticker": "ETH-USD",   "name": "Ethereum"}
+  ],
+  "watchlist": [
+    {"ticker": "AAPL",    "name": "Apple",       "query": "Apple AAPL stock"},
+    {"ticker": "MSFT",    "name": "Microsoft",   "query": "Microsoft MSFT stock"},
+    {"ticker": "GOOGL",   "name": "Alphabet",    "query": "Alphabet Google GOOGL stock"},
+    {"ticker": "AMZN",    "name": "Amazon",      "query": "Amazon AMZN stock"},
+    {"ticker": "NVDA",    "name": "Nvidia",      "query": "Nvidia NVDA stock"},
+    {"ticker": "META",    "name": "Meta",        "query": "Meta Platforms META stock"},
+    {"ticker": "TSLA",    "name": "Tesla",       "query": "Tesla TSLA stock"},
+    {"ticker": "JPM",     "name": "JPMorgan",    "query": "JPMorgan Chase stock"},
+    {"ticker": "XOM",     "name": "ExxonMobil",  "query": "ExxonMobil stock"},
+    {"ticker": "ASML.AS", "name": "ASML",        "query": "ASML stock"},
+    {"ticker": "MC.PA",   "name": "LVMH",        "query": "LVMH stock"},
+    {"ticker": "SAP.DE",  "name": "SAP",         "query": "SAP stock"},
+    {"ticker": "ENI.MI",  "name": "Eni",         "query": "Eni stock"},
+    {"ticker": "UCG.MI",  "name": "UniCredit",   "query": "UniCredit stock"},
+    {"ticker": "BTC-USD", "name": "Bitcoin",     "query": "Bitcoin price"},
+    {"ticker": "ETH-USD", "name": "Ethereum",    "query": "Ethereum price"}
+  ],
+  "macro_queries": [
+    "Federal Reserve interest rates",
+    "European Central Bank policy",
+    "stock market today",
+    "geopolitical risk markets oil",
+    "inflation report markets"
+  ],
+  "news_per_item": 5,
+  "language": {"hl": "en-US", "gl": "US", "ceid": "US:en"},
+  "track_record_horizon_runs": 5,
+  "risk_settings": {
+    "_avviso": "Questi numeri li scegli tu. Il tool fa solo il calcolo aritmetico, non decide al posto tuo. Cambia i valori con la tua situazione reale prima di guardare i risultati.",
+    "account_size": 10000,
+    "currency": "EUR",
+    "risk_per_trade_pct": 1.0,
+    "stop_loss_mode": "atr",
+    "atr_multiplier": 2.0,
+    "default_stop_loss_pct": 5.0
+  }
+}
