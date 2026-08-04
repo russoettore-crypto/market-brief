@@ -1,0 +1,35 @@
+name: Valida configurazione
+
+on:
+  push:
+    paths:
+      - "watchlist.json"
+      - "main.py"
+  pull_request:
+    paths:
+      - "watchlist.json"
+      - "main.py"
+  workflow_dispatch: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Controlla che watchlist.json e main.py siano validi
+        run: |
+          python3 -c "
+          import main
+          main.load_config()
+          print('Configurazione valida: watchlist.json e main.py sono a posto.')
+          "
