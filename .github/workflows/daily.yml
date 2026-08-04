@@ -1,0 +1,38 @@
+name: Daily Market Brief
+
+on:
+  schedule:
+    # 06:00 UTC, lun-ven = ~7-8 del mattino in Italia (a seconda dell'ora legale/solare)
+    - cron: "0 6 * * 1-5"
+  workflow_dispatch: {}  # bottone "Run workflow" per testare a mano
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installa dipendenze
+        run: pip install -r requirements.txt
+
+      - name: Genera il report
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python3 main.py
+
+      - name: Pubblica il risultato (commit + push)
+        run: |
+          git config user.name "market-brief-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/
+          git diff --staged --quiet || git commit -m "Report del $(date -u +'%Y-%m-%d')"
+          git push
