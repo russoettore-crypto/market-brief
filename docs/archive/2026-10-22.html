@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Brief — 22/10/2026</title>
+<style>
+  :root {
+    --board-bg: #14171A; --board-line: #262B31; --paper-bg: #FAF8F3; --paper-line: #E4E0D6;
+    --ink: #1E2024; --ink-soft: #6B6A63; --ink-inv: #E9E7E0; --ink-inv-soft: #9AA0A6;
+    --pos: #4FAE7D; --neg: #D9584F; --flat: #9AA0A6; --amber: #C68A2E;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper-bg); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; }
+  .wrap { max-width:920px; margin:0 auto; }
+  .board { background:var(--board-bg); color:var(--ink-inv); padding:28px 20px 22px; }
+  .eyebrow { font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-inv-soft); margin:0 0 10px; }
+  .headline { font-family:Georgia,"Iowan Old Style","Times New Roman",serif; font-size:26px;
+    line-height:1.35; margin:0 0 20px; max-width:640px; font-weight:500; }
+  .strip { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+  .chip { font-family:"SF Mono","IBM Plex Mono",Consolas,"Courier New",monospace; font-size:12.5px;
+    border:1px solid var(--board-line); border-radius:3px; padding:7px 10px; display:flex; gap:8px; align-items:baseline; }
+  .chip-name { color:var(--ink-inv-soft); }
+  .chip-price { color:var(--ink-inv); }
+  .chip.pos .chip-pct { color:var(--pos); }
+  .chip.neg .chip-pct { color:var(--neg); }
+  .chip.flat .chip-pct { color:var(--flat); }
+  table { width:100%; border-collapse:collapse; font-family:"SF Mono","IBM Plex Mono",Consolas,"Courier New",monospace; font-size:13px; }
+  .main-table { table-layout:fixed; }
+  .main-table th:nth-child(1), .main-table td:nth-child(1) { width:19%; }
+  .main-table th:nth-child(2), .main-table td:nth-child(2) { width:13%; }
+  .main-table th:nth-child(3), .main-table td:nth-child(3) { width:11%; }
+  .main-table th:nth-child(4), .main-table td:nth-child(4) { width:16%; }
+  .main-table th:nth-child(5), .main-table td:nth-child(5) { width:41%; }
+  td[data-label]::before { content:none; }
+  th { text-align:left; font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:11px; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--ink-inv-soft); font-weight:500; padding:0 10px 10px; border-bottom:1px solid var(--board-line); }
+  td { padding:12px 10px; border-bottom:1px solid var(--board-line); vertical-align:top; }
+  .tk { font-weight:600; white-space:nowrap; }
+  .tk-name { font-family:-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink-inv-soft); font-size:11px; font-weight:400; }
+  .num { text-align:right; white-space:nowrap; }
+  .pos { color:var(--pos); } .neg { color:var(--neg); } .flat { color:var(--flat); }
+  .news { font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:12.5px; color:var(--ink-inv); }
+  .news a { text-decoration:underline; text-decoration-color:var(--board-line); }
+  .src { color:var(--ink-inv-soft); }
+  .flag { font-size:11px; color:var(--amber); font-family:-apple-system,"Segoe UI",Roboto,sans-serif; margin-left:4px; }
+  .paper { padding:30px 20px 40px; }
+  .paper h2 { font-family:Georgia,"Iowan Old Style","Times New Roman",serif; font-size:19px; margin:0 0 16px; }
+  .paper th { color:var(--ink-soft); }
+  .paper .src, .paper .tk-name { color:var(--ink-soft); }
+  .trend { font-weight:700; margin-left:2px; }
+  .section { margin-bottom:36px; }
+  .tr-grid { display:flex; gap:14px; flex-wrap:wrap; }
+  .tr-card { flex:1; min-width:160px; border:1px solid var(--paper-line); border-radius:8px; padding:14px 16px; }
+  .tr-label { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:8px; }
+  .tr-stat { font-family:"SF Mono","IBM Plex Mono",Consolas,"Courier New",monospace; font-size:30px; font-weight:600; line-height:1; margin-bottom:8px; }
+  .tr-sub { font-size:12px; color:var(--ink-soft); line-height:1.6; }
+  .size-table th, .size-table td { border-bottom:1px solid var(--paper-line); }
+  .macro-block { margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--paper-line); }
+  .macro-block:last-child { border-bottom:none; }
+  .macro-block h3 { font-size:14px; margin:0 0 8px; font-weight:600; }
+  .tag { font-size:10.5px; font-weight:500; padding:2px 7px; border-radius:10px; margin-left:6px; letter-spacing:.02em; }
+  .tag.pos { background:rgba(79,174,125,.15); color:#2F7B4F; }
+  .tag.neg { background:rgba(217,88,79,.15); color:#A63A2E; }
+  .tag.flat { background:rgba(154,160,166,.18); color:#6B6A63; }
+  .macro-block ul { margin:0; padding-left:18px; color:var(--ink-soft); font-size:13.5px; line-height:1.7; }
+  .macro-block a { text-decoration-color:var(--paper-line); }
+  .archive { font-size:12.5px; color:var(--ink-soft); }
+  .archive a { margin-right:12px; display:inline-block; text-decoration-color:var(--paper-line); }
+  footer { padding:20px 20px 40px; font-size:12px; color:var(--ink-soft); line-height:1.6; border-top:1px solid var(--paper-line); }
+  @media (max-width:640px) {
+    table, thead, tbody, th, td, tr { display:block; width:auto !important; }
+    thead { display:none; }
+    tr { padding:12px 0; border-bottom:1px solid var(--board-line); }
+    tbody tr:last-child { border-bottom:none; }
+    td { border:none; padding:3px 0; }
+    td[data-label]::before { content:attr(data-label) ": "; color:var(--ink-inv-soft);
+      font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:11px; }
+    td.tk[data-label]::before { content:none; }
+    .num { text-align:left; }
+    .headline { font-size:22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="board">
+    <p class="eyebrow">Market Brief &middot; Thursday 22 October 2026, 13:15 CET</p>
+    <p class="headline">Il tono delle notizie è contrastato, senza una direzione chiara.</p>
+    <div class="strip"><div class="chip pos"><span class="chip-name">S&amp;P 500</span><span class="chip-price">7,757.17</span><span class="chip-pct">+0.58%</span></div><div class="chip pos"><span class="chip-name">Nasdaq Composite</span><span class="chip-price">26,702.86</span><span class="chip-pct">+1.05%</span></div><div class="chip pos"><span class="chip-name">Dow Jones</span><span class="chip-price">52,856.09</span><span class="chip-pct">+0.69%</span></div><div class="chip neg"><span class="chip-name">Euro Stoxx 50</span><span class="chip-price">6,112.05</span><span class="chip-pct">-1.54%</span></div><div class="chip neg"><span class="chip-name">FTSE MIB</span><span class="chip-price">48,809.24</span><span class="chip-pct">-1.68%</span></div><div class="chip neg"><span class="chip-name">Bitcoin</span><span class="chip-price">81,878.98</span><span class="chip-pct">-2.54%</span></div><div class="chip neg"><span class="chip-name">Ethereum</span><span class="chip-price">2,401.47</span><span class="chip-pct">-2.80%</span></div></div>
+    <table class="main-table">
+      <thead><tr><th>Titolo</th><th>Prezzo</th><th>Var.</th><th>Sentiment notizie</th><th>Notizia principale</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tk" data-label="Titolo">AAPL<div class="tk-name">Apple</div></td>
+          <td class="num" data-label="Prezzo">343.99</td>
+          <td class="num pos" data-label="Var.">+1.32%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxNY3JUbWpTS29yaXBSMVRxZjM0bmttUDZLZzVTWFhjU1hLWHJhWGtEWVl1T1JJUjdEeXZrb05rUFpzWTVMR1JHWjd3TFphWTFlQ25OWWtQSm5Udk42R2NlNnFFcEM3azNRNllGNnQxNWJKb2U1S3I0ZzFfZTkyYkp5UWw2c3ZWa0IydzRKaGpLVEJCbzU5XzJzbzVIUGxyY3M?oc=5" target="_blank" rel="noopener">Billionaire Ken Fisher and Jim Cramer Still Like Apple (AAPL). Should You? - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MSFT<div class="tk-name">Microsoft</div></td>
+          <td class="num" data-label="Prezzo">532.95</td>
+          <td class="num pos" data-label="Var.">+0.20%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMilwFBVV95cUxOaHdDUjJiMUkwT3NkQ05EOWxJX3lpV1AxUWlqNG9PaHRUWm1BNnJtY3pUMHljbVY4M2UwR18zelVVWkVMa0xiemN6T19MQzhvU0FMLXNQOUdCb1prc0lxb2hxWlRhRTJPZE5aa05DNk1UT2pUWFhVX0Z1QlNHTFZReUhNSU1VbGlXZU1oeXZUNlgzNVZoNS1J?oc=5" target="_blank" rel="noopener">Microsoft (MSFT) Stock May Be 22% Undervalued After Maia 300 Unveiling - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">GOOGL<div class="tk-name">Alphabet</div></td>
+          <td class="num" data-label="Prezzo">334.76</td>
+          <td class="num neg" data-label="Var.">-1.62%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE1jeVJwZF93cGNFbUJ0QWJOUHJQeFAyc3BiRFpLbWJPdUdwc0RBQURzeDJDRlZXOEhGclUzTV9RM21kdVdENTYyd2hPS3VXZWtPa3c?oc=5" target="_blank" rel="noopener">Alphabet Inc. (GOOG) Stock Price, News, Quote &amp; History - Yahoo! Finance Canada</a> <span class="src">— Yahoo! Finance Canada</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">AMZN<div class="tk-name">Amazon</div></td>
+          <td class="num" data-label="Prezzo">262.37</td>
+          <td class="num neg" data-label="Var.">-0.10%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE52VmlnWW8wU2RIQTdZRHNkNlhzSXhpMHUwd29BNmZIV0x2R0pUYkN3SjhldXZIeW5xQTh6UkxienZKWHpwMExhaXZwYXZHM3dBUmc?oc=5" target="_blank" rel="noopener">Amazon.com, Inc. (AMZN) Stock Price, News, Quote &amp; History - Yahoo! Finance Canada</a> <span class="src">— Yahoo! Finance Canada</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">NVDA<div class="tk-name">Nvidia</div></td>
+          <td class="num" data-label="Prezzo">221.97</td>
+          <td class="num pos" data-label="Var.">+2.54%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxOT2NxcWJkaHFfNmVfMThEdDNKMmVlMjRWX2NMYjRLT1hZTURkQjdISVdpMjktNEZaVkthdGZHLUxmbmloSVpuSGZMSE9JMnUxOWs5UVBlYVVWYTF5NmlyX0lZdE1EYjUwYzB6ZDExcW5uZmxlR0hyemVBcmlLclNjcW1BR1JHc2U4aEhsaGVESGpHMmRoblFTbVphNWJuQQ?oc=5" target="_blank" rel="noopener">Missed NVIDIA&#x27;s Rally? Here Is What Holders Saw - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">META<div class="tk-name">Meta</div></td>
+          <td class="num" data-label="Prezzo">697.52</td>
+          <td class="num pos" data-label="Var.">+0.47%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMiswFBVV95cUxNcWw2TXFoSmlmM18yRERkMXpHSGdDN0lWbzl1ZGVNczh4aUYxU1JmZkJualZKREM2Q3JmcjFtWE50a0JUR283UU5XdFk0d1UwSGh0QzdDM3puaU51MjlQM2k1dVdUSVBpZnVOTWI1SWg4eUN0OU5SY0ZfT2ljT0JOemxvd0JDb2tlY2lYWEZFT2VNZ1lka3RIbklORkgwUWJLMzE1XzNUQ0VReEtTaTl5U0Ezcw?oc=5" target="_blank" rel="noopener">Meta Touts AI Progress While Escalating Its Bet on the Market - Bloomberg.com</a> <span class="src">— Bloomberg.com</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">TSLA<div class="tk-name">Tesla</div></td>
+          <td class="num" data-label="Prezzo">386.47</td>
+          <td class="num pos" data-label="Var.">+3.41%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxOb09OVGpVM3FDM3I4RzJVTnVHcDk5c0Z5aHVEVS1BZ2RDRnVpQU13Yld0VTdWS0xBb3JGbWVzSHhZU0J0cVVUWjBlZWVNM3FDTGJOOWtFN2EwMTlkN1VmcjJSTDhiVnpYMFByX2c4RFhfd3pRSU0tSEhtcnlldGx1NU9GWGo3aVctSFRvTg?oc=5" target="_blank" rel="noopener">Musk Says Tesla Aims to Begin Humanoid Robot Sales Next Year - WSJ</a> <span class="src">— WSJ</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">JPM<div class="tk-name">JPMorgan</div></td>
+          <td class="num" data-label="Prezzo">335.19</td>
+          <td class="num flat" data-label="Var.">-0.02%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMijgFBVV95cUxQcWItYk1rbU5vTkxmU3RpelV0RVY2cC0wYXVXZ2paOUtOSy1FQ2s2Vnd5M29QZ0lobE1Za3ZGSjVHU1dYNWxoREttc3RhSmRIalBRcTlMcmZxbTd6V3hfb3VmbU11Q2V3MHY0SFNhZ2ZxLWsyVkROal91N0FKZFR6bTI5RTA5SGNEU25STHVB0gGTAUFVX3lxTE1jY2ZtVWd5N2ZubDkwcG1NUzVwSzh0RHNKcFd2ek16amJ2MVlialdzT2tzTE5uTWo3d3ZfcTdZVDFqeVMyTUNPZEc2ODNsQl9MdVBZTkJTaDg0Tm01cUdLTF9MWmRveTI4WW9VODFnN2dHZ3cxbC05V0VGQlVlNl9Td0RvT3VMOWFDaUM0MzdLLTNWdw?oc=5" target="_blank" rel="noopener">Goldman Sachs, JPMorgan and Morgan Stanley are dominating the AI stock boom. Here&#x27;s their edge - CNBC</a> <span class="src">— CNBC</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">XOM<div class="tk-name">ExxonMobil</div></td>
+          <td class="num" data-label="Prezzo">178.09</td>
+          <td class="num pos" data-label="Var.">+0.13%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMioAFBVV95cUxOR0Z5UDlOcHQzWVNhNy1sVkhrSVNsdnNZZG5sQnVxU01VZzRtMk4tcUhRZjI5cTBMcDd1ZERKQWs4WEJpTlZUN1VfVTZtYVNCdGNoWFp0eUVmclVKWVh1M2JsT1k3VXljb0szejdOaXJBRFRvRHdnWmcyTjRqdHlfZW9BbGZmdW1ib0pST1I4VHBna2Z6OFhRVWhzS25xVTZB?oc=5" target="_blank" rel="noopener">Should You Forget ExxonMobil and Buy Cameco Stock Instead? - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ASML.AS<div class="tk-name">ASML</div></td>
+          <td class="num" data-label="Prezzo">1,453.60</td>
+          <td class="num neg" data-label="Var.">-2.69%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOZTk2bk5OR04zTEswTm94YUMzejFSRmk0aUJhRHdITjJGcWVMVm5LR0RtZ2F0aHEzdUR6N0t6TVFxOFBtNTZPUHY0Q0VOWC1PMmNmRk5BcjhDUUZOUFEzdUhzbS01VDFFQ3VYQUhBZG9xS0xxcVNMeDJPbmNVUFhYR0pCQVB0dG1GeEtmN0owWmM4YjI3OHFLTm5R?oc=5" target="_blank" rel="noopener">ASML Has Incredible News for Nvidia Stock and Micron Stock Investors - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MC.PA<div class="tk-name">LVMH</div></td>
+          <td class="num" data-label="Prezzo">383.35</td>
+          <td class="num neg" data-label="Var.">-1.35%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMiU0FVX3lxTE9pU21kSjA3UlN1OFhuOXQyVTg1N21URkhIQVctOWxpSVhMbHAwNGFYb1V1amN4VS1FQVdyMzNXdkhSSmNUSFBERHVzbXpZN1VNdkRB?oc=5" target="_blank" rel="noopener">LVMH Moët Hennessy - Louis Vuitton, Société Européenne (MC.PA) stock price, news, quote and history - Yahoo Finance Singapore</a> <span class="src">— Yahoo Finance Singapore</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">SAP.DE<div class="tk-name">SAP</div></td>
+          <td class="num" data-label="Prezzo">207.20</td>
+          <td class="num neg" data-label="Var.">-0.69%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxQenZyUHdiQmJlWE1MX2lsLTAwT2FmSml4bEpzMXp0dEFzMVZjZjdYR0RVbnhIZ1dtRjlEOHA1VFpRNVlEZXFkTDVCYmV3X2lkM1ZnMFA1eFgzM1lOUWhEXzhfNUlfTmFCQ2Zpc0t4bVhDand5Ri1uTEhlU0NOeFJyOVhoN05VaWlXYzVhSzVSSlhlTXc?oc=5" target="_blank" rel="noopener">SAP (XTRA:SAP) Stock Could Be 33% Undervalued On Cash Flow - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ENI.MI<div class="tk-name">Eni</div></td>
+          <td class="num" data-label="Prezzo">26.52</td>
+          <td class="num pos" data-label="Var.">+0.47%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMikgFBVV95cUxPZmFXRU41UVRxd044NWswMmNKQVhocmk0TXF0cEpucXJMN2Fyd1pJLXE2U0ktakdTYUowYkxaLUtOQjlZSTYxWEdXQmpuSjNybXRvX1pReHpwMzA4Qy14cXFYNDVwQXpiUVRZeVA3UlZLbXlRa3JMZUs0QzVkNDZpYXhidk51eF95Um5ST0o5MC1fdw?oc=5" target="_blank" rel="noopener">Sector Update: Energy Stocks Lean Lower Premarket Wednesday - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">UCG.MI<div class="tk-name">UniCredit</div></td>
+          <td class="num" data-label="Prezzo">72.98</td>
+          <td class="num neg" data-label="Var.">-2.97%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxPUFJqRFhlLTF0R3p5VjJrZmE2OVVQcTlSa3lUUXlaY1NNRG80R0I0MWRvZjhEOTBCMkw0b2VBQkoyaGg5Ui1sSUtDVHZYY2l0a2ZHcmtYOEtNclZiZlpsT1VKSFJycy11UTZmY3dGTllObE5KRkE5WG96ZUx4N3p6RU1UczdockZ4YTdFYmlobC1UcTRjUk8tcFdxTUQ5Zw?oc=5" target="_blank" rel="noopener">Earnings To Watch: UniCredit SpA (MIL:UCG) Q3 2026 -- GF Value Sees 26% Downside - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">BTC-USD<div class="tk-name">Bitcoin</div></td>
+          <td class="num" data-label="Prezzo">81,863.97</td>
+          <td class="num neg" data-label="Var.">-2.56%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMiowFBVV95cUxPWndHOUc2dEFHQlhkRlQ0ZFBTajRTbWJfbVFPTUJIU0F5UGR1andMYkhlT0xGS1JOZXJoeTM2ODF0R0hvOG5wbHZyRjFaYUtPRnN4dTd0Njd0SXFXYlVRb2FOSk5oV2p2bUhTd2dBcTVnWVp3aFVjOUE4VmRnOUktU25xTWVKdjVvSkdxNi1CSUtvVkJOZzAwUEp6dnF1ZUpUZHdZ?oc=5" target="_blank" rel="noopener">Bitcoin Price Analysis: Recent Buyers Break Even Near $87,700. Could Their Selling Stop BTC’s Rally? - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ETH-USD<div class="tk-name">Ethereum</div></td>
+          <td class="num" data-label="Prezzo">2,400.99</td>
+          <td class="num neg" data-label="Var.">-2.82%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><a href="https://news.google.com/rss/articles/CBMiVkFVX3lxTE9yTEhsN2dRYTFyRFpMWlZOWnp6bHVtT2U1cUdQZkxfWG9MeFZ3OVpNSU8tZXdZSGtiajV6V1hHSy1nc2psdjc1bXFFak10OFV5ODdSVGFR?oc=5" target="_blank" rel="noopener">Ethereum ETH (ETH-AUD) Live Price, News, Chart and Price History - Yahoo Finance Australia</a> <span class="src">— Yahoo Finance Australia</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+  <div class="paper">
+    <div class="section">
+      <h2>Eventi macro di oggi</h2>
+      
+        <div class="macro-block">
+          <h3>Federal Reserve interest rates <span class="tag flat">Misto</span></h3>
+          <ul><li><a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxNdWN5TzJiNG5XMFJvcTdNbUxMTHd2MllzY05iR0V4UklVV20wRTYtMlZ1YzVSQkwyZ2p5OFkxNFNTM19DVjhFZTI3UkdESFJkMm5CSFV5cXVqR0VkYk5jZzdiZ2c4VUEtcVJ2eFZHTjdDUVhnSVRzMVBodGQ2YkZmcF9vZXJfQQ?oc=5" target="_blank" rel="noopener">The Fed’s Dilemma: Can Markets Damp Inflation or Is Another Rate Hike Necessary? - Barron&#x27;s</a> <span class="src">— Barron&#x27;s</span></li><li><a href="https://news.google.com/rss/articles/CBMibkFVX3lxTE1XMWNxSHJrSVpZUFdhcm1SN0FKbkpaYTR3V195dS1rTWhQY0dCWEhDT1ZlYkNlMi13aG5BdXpEN200UmhsRDZ2WDg1dEZyLTE3YjZuYi1HeWxSV0lvUkswbEM1bXRhN3dCeTBvU1Vn?oc=5" target="_blank" rel="noopener">Mortgage Rate History: 1970s To 2026 - Bankrate</a> <span class="src">— Bankrate</span></li><li><a href="https://news.google.com/rss/articles/CBMiggFBVV95cUxPZkdNWlNnTHI1dUJKWTBnaG9PbVl0dXpkVW8tcjJsS3Y5S1hGVlR5Ukh1d3JBVEQ4ajE5aVEybDhyMkVYbVhUT3NJSTQwUVRwUkI3WVZkMHRJSGtCYWpsR2RaaEJZZlQ4VnVZY2NfaG9XR3FqQTJOWVpDZlBab19UeE1n?oc=5" target="_blank" rel="noopener">The Inflation Nemesis—More Fed Rate Hikes Are Coming - Cabot Wealth Network</a> <span class="src">— Cabot Wealth Network</span></li><li><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxQOWJYd0NERVlESGhjUzBFQm1tQkdDMVZtbnZxXzByQkxIS29abXpTRXZqYXhyamV2b19FbUpCR2RoWW9aUGVvenh5Q20tVWpWQzhRYnQzTk1iaEtQZWxPTnJUZU5kUHR2NUxvMHlLS1JRR0g2dFktUEhCbDVvTGRUU2YybEk5SzFYRjRpZjFqUVhKQ0JQaElseUI2QjhGMmY1R3d1NGZxcmYwMVlyQ1dvWQ?oc=5" target="_blank" rel="noopener">Brookings paper offers broad plan to shrink Fed balance sheet - Reuters</a> <span class="src">— Reuters</span></li><li><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxPdHhhdkVyeTFFVUJ3MUUyNDJXQWw3WkE2d0J2N2h1RzZTVHFxdDRUX1g3R2pidHUxMDIwNjdfNjkxSkM4ak00YlVBaDAtWVdqaTVZYlh1NXlnZS10YjhianV4WGtKakdjcl92M1NtMmZHSmFfMUs0VkYtdlFwUlFTSFNfY2NVUDJTbmNpS2UwSEZnbW4yUnRYckV3Q1JNQ1kzaGc?oc=5" target="_blank" rel="noopener">Two Cheers For Warsh&#x27;s &quot;Quiet&quot; Federal Reserve - RealClearMarkets</a> <span class="src">— RealClearMarkets</span></li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>European Central Bank policy <span class="tag flat">Misto</span></h3>
+          <ul><li><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxPUUdkSlo1cEpTSWZhYzZRTGJfbFBKX0xUVElEZldoTFludl9ya1daVWpvc1E5NzN1b3Y2S2EzN0RxTGU0RmdWVFk1VmxMVlVSRHBaQkpOXzhYYkhLQXB4blE1STJnUTRKS3ZSNUNqV3BEWXlsSVBVY2lDSHV5ajk4NUtZR2ZicWJWYXgwX0dwSXI1MTFSLUdKWXF1SFlzX0cxUW9IN2NVYmxIMTY2eldvd0JnTUItSms?oc=5" target="_blank" rel="noopener">One interest rate, three inflation realities. Why Europe’s price shock is so uneven - Euronews.com</a> <span class="src">— Euronews.com</span></li><li><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxPUGphaHUtVm1kblAwY21ieEpqWksyZUJXT1prRzRFUGNxbFRqZkZBRXNXQzRUYTNfSGZENDJNaWN3c1p5YWJwenUyb3JBTlFLQlBLQ3l4Q1d2ZmFSZElpNTB2XzBfVjlxZTlzWFh5ZDYyLTNBSjdocTd3TUR6bHFsZ1BrSW8wR1ROTDYw?oc=5" target="_blank" rel="noopener">Market Minute: France is in a bind. Is there a way out? - The Real Economy Blog</a> <span class="src">— The Real Economy Blog</span></li><li><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE1acjBVSjExYmhpR0JWdlc2azhodlpDQmZPLTNYLXBrLXZzSGdLMGZEaTBoYjNFSUU3Q3ZzMFVCd2czMXVFZ2hTR2pfclpwMFRJNzVhX2pEYXVCdUNNX0N3dEdXc2VrTkJCeWlZWkxZbEVtQQ?oc=5" target="_blank" rel="noopener">ECB Caught In The French Drama - Seeking Alpha</a> <span class="src">— Seeking Alpha</span></li><li><a href="https://news.google.com/rss/articles/CBMimwFBVV95cUxOaUc5UHRjNzhlazhKcFNyX3p2OWNtVS1ETGtIajd0S0ZWVXJVSVNGbHpNMmphRmNxcG9NQWktLUlWMUVNcUNZMXJjTXBiQWgyYVIxLXJhVUs3NkIxV1EyUkgyQUFoVUtyTEMzTUpmVDNwZFlVLVAwQ2RjamVGWnk3NmJYV3pmNjV2SDdZb1o5RmFhMTAxZXY2cTlRQQ?oc=5" target="_blank" rel="noopener">Asia FX mixed, dollar slips near 3-wk low as traders eye central bank meetings - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></li><li><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxPdzdyYnk4WVI0Z05mdTJaRFNxd05RdFJWcmJEcVRhRVN0VEhTYi1fNFVTRHBkT0Z5NWVOeHpUUEo4QVBfZ3lEOVI1S0xWUl9GVzd2akZyT1R0WV8yaW5hUGJ2RU9TS3ZoNmJIakNsZjZNSkxwUUtXbW50SG5uQkxCdnFQS28?oc=5" target="_blank" rel="noopener">Europe’s underrated digital trailblazing - Financial Times</a> <span class="src">— Financial Times</span></li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>stock market today <span class="tag flat">Misto</span></h3>
+          <ul><li><a href="https://news.google.com/rss/articles/CBMivgFBVV95cUxOaHkzVk1fTzlucTV0WFN6LVc0aHNGMmxBZ2VkTldvNjc3VmM2NTBXYXh1YmdVZ0QyQTVQSVV0bFNiZ2xvUVF6OWNxS3EyRFpJM01lZXN4RGhjaExidEVWZGNZdTFjV0NMVE90OUJ6UFJHbkg2UTA0cDF3UmhYd1RSUExHNUVILTVrQ0cxU01SUEYwVk1uaWRoZnYzSHVnMmtzM2xxYm90cFhaRDM4Y0g5bENfTG0wcWNWVXFydktR?oc=5" target="_blank" rel="noopener">Stock market today: Dow, S&amp;P 500, Nasdaq futures fall as traders assess Tesla, Meta earnings - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></li><li><a href="https://news.google.com/rss/articles/CBMilAFBVV95cUxNeTBrLWVPck50dERfQ3N3cFhBMFpUN3lfZFFOeXZLM0lDR0lOSFp2Vnd0OHFaWU5JQ092UHg4XzlXQlEtN2JQNG1oWnpFYWFKSUFoYmZkT1FqTHR1bXR5b010d3ZvSENDZ0phTk04R1k5aUg4Z2ZTb1p2MmQ2LW53Ulk5NktSU0prZWwtMkFIZFo1SDll?oc=5" target="_blank" rel="noopener">Stocks Slide as AI Trade Falters and Oil Rallies: Markets Wrap - Bloomberg.com</a> <span class="src">— Bloomberg.com</span></li><li><a href="https://news.google.com/rss/articles/CBMihwJBVV95cUxPOVlPODIzdV8yUGJfZHZnMURCTU04czVhMnZuZkVmelRNR3BtQmVBZzdyZ2ptNXd2WFBpSFktLWhKUXdGS0VMaVNjcFRnY2FvQlRXS3JtdzN2STRPNGtST1FPU2dlMENuTDVuLTFDWHFtakNJSUJuSW1LdHV6bGU4eWs3blhBc0VIcTdReUxIX0lDMVpoNFJLdFd1N1pGXzhURkZxekRNWWQ5c2lONzcxTTZUc0R5U19PcWlqZjZDenVFOC1ESXZobzVjOTZLcFlSWDdqU3NaMVNwbVF1T2h2S052N1o5WHhSUy02T19IV21LYm1NVnRpc0JkWk5OUEUzb0Y0bWlTNA?oc=5" target="_blank" rel="noopener">Stock Market Today: S&amp;P 500, Dow Futures Drop Following Asian Market Sell-off, Middle East Tensions — NFL - Benzinga</a> <span class="src">— Benzinga</span></li><li><a href="https://news.google.com/rss/articles/CBMitwFBVV95cUxQT2YwOXk4SUd6SVFIM0Vva2lxQTkwZHA1UC1Md0VETk56c2J3SF9QSTVHMEVteDNxUXdjNGJpT3d0WVQ3ZnBsSzhpVG94RW1MU0xaWDJ3M0FwcjRNTFFxdTBHQ0NPOWh3WkNDUUpGclZHWGhkb0Y3UGlUQVRvTFVNZEVqMU5KV19xTVVfdklhS3duVEhRaFBCSTY3amZnbVA1dHVhSHZKZnpsMjZvM3BXWS1uZGFMZmc?oc=5" target="_blank" rel="noopener">Stock Market: Will S&amp;P 500 Open Up or Down Today? - Benzinga</a> <span class="src">— Benzinga</span></li><li><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxOMTBoUXBVQlZQVm9FazJTOFh5cnhEcXZMVzlCRHVqWll0Z1pYQldEbjBPQXVaY1dBVDJiM2lvN3FpVGY1SHZKSEFaUDcydGpuVDZVcEY2d1plNE1XaGUwcUVuNEYwZm9QTnUybnZwMnNoNl9DbmNtbXB5M29mVTdHODViTklFLUNDa2lkdTAtV3lFYl9nRGc?oc=5" target="_blank" rel="noopener">UK Stock Market Today: FTSE 100 Futures Edge Lower On Sticky Inflation Concerns - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>geopolitical risk markets oil <span class="tag flat">Misto</span></h3>
+          <ul><li><a href="https://news.google.com/rss/articles/CBMingFBVV95cUxOUThvQVl1RnVpSjI0NnV3VGhRWUU2eWVmOC01c3hpOXJ6eTR0OXNUOTh3VE1vNW1jNFlobjF6QmJRcDc5eF9nbTZQbngzUlZWbWJ6aXpSYndoNHhsRVFoWURGWHF1WmwwOS1QUTRyTmgwaUZLVlB0UTJqMmUyTTY0SnluSUhTVGR4anFHZGhMTUItM3I5VUlIZkhRVEQydw?oc=5" target="_blank" rel="noopener">Oil Futures End Mixed as Traders Weigh Supply Recovery Against Shipping Risks - WSJ</a> <span class="src">— WSJ</span></li><li><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxNdzVBRVpMelFCUXptU2w1VFdxLV9XUFBsNVlaX1ZHMTlEbDQwNW1WWWpvUjNGYnM1d0h3d2s2Y1ZDMkJJRVh0dHlGUVp0aWNQeF9YMjFDTE1vazZGbG5tM0VrM002WVB1STFibzVzV29WY2lyLXc5NlhHV0t0NDB3MEtBUWdHM3dB?oc=5" target="_blank" rel="noopener">Market Analysts React to US-Israel Strikes on Iran - Energy News, Top Headlines, Commentaries, Features &amp; Events - EnergyNow.com</a> <span class="src">— EnergyNow.com</span></li><li><a href="https://news.google.com/rss/articles/CBMinwFBVV95cUxQSElXM19heDg2UGxVYkdQTXVVSk9GVFVINC1ISzJQZVFEZEEzYTZGOTJNRG80NTBJN1RSNlZUR0c4cF9PcG9IemxDLVFMRWZDRElfS00zTXhaQmR5bGN1V1V5NzJnQ2hhU3E4X0N5U05qTTNxWklJS2VySmNhWnJ4dFpiNTJHcHpQSU00dXJSc3ZTVlpQSE9VRWhnSlBQbWc?oc=5" target="_blank" rel="noopener">Gulf Supply Risks Keep Oil Premium High as Brent Tops $110 - TradingPedia</a> <span class="src">— TradingPedia</span></li><li><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxOY3czTGhsQkdNQ185bVprVjdXTDdpcWx0SVY5WFYzdDdvbEk1TzUwS0lEODlhcWppTmlENnFjRkZaODFWekQ1SUVOcTVVNXk1RHBVaTR6RzVyZnI3YUV5UkpiejhFbkdxZHV1N0NqTi1xVElTOG1TcmR3WHJfTk05ZHhDLTJvV3h4RzlZakJLcmtTQWFnYU1rLUFLMl9EVGp5Q2hFam1OaVJKcXdtcHJ0aFp2T1JZLUF0ZmdCR21LTQ?oc=5" target="_blank" rel="noopener">US-Iran tensions refuse to fade as fresh Strait of Hormuz attacks keep oil markets on edge - investingLive</a> <span class="src">— investingLive</span></li><li><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxQTDI5R0RZZ00xMFVfay1lSnh4Q0JYbEJrd21TV29hZm1ReF9FU1M4TjlDOENqNWs2eG1TWWYyQlZzV2tFTTRFcldUSm5vWDlNR3VtZnhLSy1oUDRlMFk2NWtnLUgyWlk2NUFnQ2ZIWDNZQVdDbEtzU1lQU0tPRllodURFeFNTLVZkZXdNN004LVJwNEJybGZySGdaelBrZ0pBWTFIRjNZNmNOeVBQcDdsUkNib0FhOTF3Uy1zSkxEWQ?oc=5" target="_blank" rel="noopener">US Dollar: Why Does Momentum Remain Subdued Amid Oil Risks? – ING - www.tmgm.com</a> <span class="src">— www.tmgm.com</span></li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>inflation report markets <span class="tag flat">Misto</span></h3>
+          <ul><li><a href="https://news.google.com/rss/articles/CBMihgFBVV95cUxNdWN5TzJiNG5XMFJvcTdNbUxMTHd2MllzY05iR0V4UklVV20wRTYtMlZ1YzVSQkwyZ2p5OFkxNFNTM19DVjhFZTI3UkdESFJkMm5CSFV5cXVqR0VkYk5jZzdiZ2c4VUEtcVJ2eFZHTjdDUVhnSVRzMVBodGQ2YkZmcF9vZXJfQQ?oc=5" target="_blank" rel="noopener">The Fed’s Dilemma: Can Markets Damp Inflation or Is Another Rate Hike Necessary? - Barron&#x27;s</a> <span class="src">— Barron&#x27;s</span></li><li><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxOMTBoUXBVQlZQVm9FazJTOFh5cnhEcXZMVzlCRHVqWll0Z1pYQldEbjBPQXVaY1dBVDJiM2lvN3FpVGY1SHZKSEFaUDcydGpuVDZVcEY2d1plNE1XaGUwcUVuNEYwZm9QTnUybnZwMnNoNl9DbmNtbXB5M29mVTdHODViTklFLUNDa2lkdTAtV3lFYl9nRGc?oc=5" target="_blank" rel="noopener">UK Stock Market Today: FTSE 100 Futures Edge Lower On Sticky Inflation Concerns - Yahoo Finance</a> <span class="src">— Yahoo Finance</span></li><li><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxQRXlpc0VDdmhiT24yalNYQ1pRQW9nN2ZkV1N1RnlOMmMxWTJnTnRkUXU1QnRBVnlYTllNaVQ0ZWdLc055dHJ1VkxKUjF2ai01SzRQNDV2dV94SlJ6VXdOVHV2eGpZTkllcHRhRWJPZENiN2Y4YldxQk4xTzlOSE5zYnR4SnJBcHcyU0hIbzRwaEFQZTFlV3ZmcmN3YTVFVEdHNjd5TWUyQng1OUZMRGxrZXJB?oc=5" target="_blank" rel="noopener">British Pound futures climb on UK inflation and rate hike expectations. - CME Group</a> <span class="src">— CME Group</span></li><li><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxPQUhJdWYzN2t5ZVFabzhzLVVhakFaQ2xWUHVxV21uZ0Z4U0FLX0FDSk9RdzFkSkZzNjZ3X1lObHRMWnhRM3dnTUFDNXpfWTJieWdIeXVyWVVwdnAwVy1zNDYwSFk3LWh2dDRBM2YtZkhhOVNtcVBsLXY1U3lwNGp4LWVfWm90OXdzc1pQc1RkYnJwUFVBaFE?oc=5" target="_blank" rel="noopener">The Latest Inflation Data Spells Bad News for Fed Chair Kevin Warsh and the Stock Market - The Motley Fool</a> <span class="src">— The Motley Fool</span></li><li><a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxOMG9KdWFSdV90N2s0bHM3d0xsTVlOMGduRE1RZ1FvSi1SbnU4MFlRQUIteDlZTC03TmNHVFl3Z2lhV2FrN1NwQjV5Wk1rU096X1pUNXB4M2c2bS1MdXlSeEZHaTJobmFsQzlvYTN6WHpyd2FkRzFqOFdkbzZUdjZoNzJCa1B6c2RxMzBmemg3RnBWdldpM0x0VEtCR0F0YXE3N3V2YXppNnN6ejBs?oc=5" target="_blank" rel="noopener">UK&#x27;s FTSE 100 ticks higher on energy boost; hot inflation report limits gains - Reuters</a> <span class="src">— Reuters</span></li></ul>
+        </div>
+    </div>
+    <div class="section">
+      <h2>Track record del segnale</h2>
+      <div class="tr-grid">
+        <div class="tr-card">
+          <div class="tr-label">Positivo</div>
+          <div class="tr-stat pos">53%</div>
+          <div class="tr-sub">direzione indovinata su 255 segnali</div>
+          <div class="tr-sub">rendimento medio: +0.51%</div>
+        </div>
+        <div class="tr-card">
+          <div class="tr-label">Negativo</div>
+          <div class="tr-stat neg">42%</div>
+          <div class="tr-sub">direzione indovinata su 165 segnali</div>
+          <div class="tr-sub">rendimento medio: +1.45%</div>
+        </div></div>
+    </div>
+    <div class="section">
+      <h2>Calcolatore di size</h2>
+      
+    <table class="size-table">
+      <thead><tr><th>Titolo</th><th>Size</th><th>Azioni</th><th>Stop ipotetico</th><th>Controvalore</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tk" data-label="Titolo">AAPL</td>
+          <td class="num" data-label="Size">28.9% del capitale</td>
+          <td class="num" data-label="Azioni">8.40</td>
+          <td class="num" data-label="Stop ipotetico">3.5%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,890</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MSFT</td>
+          <td class="num" data-label="Size">24.0% del capitale</td>
+          <td class="num" data-label="Azioni">4.50</td>
+          <td class="num" data-label="Stop ipotetico">4.2%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,396</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">GOOGL</td>
+          <td class="num" data-label="Size">20.6% del capitale</td>
+          <td class="num" data-label="Azioni">6.17</td>
+          <td class="num" data-label="Stop ipotetico">4.8%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,064</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">AMZN</td>
+          <td class="num" data-label="Size">20.3% del capitale</td>
+          <td class="num" data-label="Azioni">7.73</td>
+          <td class="num" data-label="Stop ipotetico">4.9%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,028</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">NVDA</td>
+          <td class="num" data-label="Size">18.8% del capitale</td>
+          <td class="num" data-label="Azioni">8.49</td>
+          <td class="num" data-label="Stop ipotetico">5.3%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,884</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">META</td>
+          <td class="num" data-label="Size">15.5% del capitale</td>
+          <td class="num" data-label="Azioni">2.22</td>
+          <td class="num" data-label="Stop ipotetico">6.5%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,546</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">TSLA</td>
+          <td class="num" data-label="Size">15.6% del capitale</td>
+          <td class="num" data-label="Azioni">4.03</td>
+          <td class="num" data-label="Stop ipotetico">6.4%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,557</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">JPM</td>
+          <td class="num" data-label="Size">27.1% del capitale</td>
+          <td class="num" data-label="Azioni">8.08</td>
+          <td class="num" data-label="Stop ipotetico">3.7%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,707</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">XOM</td>
+          <td class="num" data-label="Size">24.8% del capitale</td>
+          <td class="num" data-label="Azioni">13.95</td>
+          <td class="num" data-label="Stop ipotetico">4.0%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,485</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ASML.AS</td>
+          <td class="num" data-label="Size">13.7% del capitale</td>
+          <td class="num" data-label="Azioni">0.94</td>
+          <td class="num" data-label="Stop ipotetico">7.3%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,372</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MC.PA</td>
+          <td class="num" data-label="Size">24.3% del capitale</td>
+          <td class="num" data-label="Azioni">6.33</td>
+          <td class="num" data-label="Stop ipotetico">4.1%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,427</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">SAP.DE</td>
+          <td class="num" data-label="Size">18.8% del capitale</td>
+          <td class="num" data-label="Azioni">9.07</td>
+          <td class="num" data-label="Stop ipotetico">5.3%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,878</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ENI.MI</td>
+          <td class="num" data-label="Size">26.6% del capitale</td>
+          <td class="num" data-label="Azioni">100.36</td>
+          <td class="num" data-label="Stop ipotetico">3.8%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,662</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">UCG.MI</td>
+          <td class="num" data-label="Size">17.1% del capitale</td>
+          <td class="num" data-label="Azioni">23.50</td>
+          <td class="num" data-label="Stop ipotetico">5.8%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,715</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">BTC-USD</td>
+          <td class="num" data-label="Size">20.4% del capitale</td>
+          <td class="num" data-label="Azioni">0.02</td>
+          <td class="num" data-label="Stop ipotetico">4.9%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,038</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ETH-USD</td>
+          <td class="num" data-label="Size">13.2% del capitale</td>
+          <td class="num" data-label="Azioni">0.55</td>
+          <td class="num" data-label="Stop ipotetico">7.6%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,318</td>
+        </tr></tbody>
+    </table>
+    <p class="src" style="margin-top:12px;">
+      Calcolo aritmetico sui TUOI parametri (capitale EUR 10,000,
+      rischio 1.0% a operazione). Lo stop ipotetico usa l'ATR (volatilità reale
+      delle ultime settimane) per ogni titolo quando disponibile, invece di un numero identico per tutti —
+      altrimenti torna al valore fisso in "default_stop_loss_pct". Non è collegato al sentiment del giorno
+      e non è un consiglio su quale titolo aprire. Modifica i parametri in watchlist.json con i tuoi numeri
+      reali; sono placeholder finché non lo fai.
+    </p>
+    </div>
+    <div class="section">
+      <h2>Report precedenti</h2>
+      <p class="archive"><a href="archive/2026-10-21.html">2026-10-21</a><a href="archive/2026-10-20.html">2026-10-20</a><a href="archive/2026-10-19.html">2026-10-19</a><a href="archive/2026-10-16.html">2026-10-16</a><a href="archive/2026-10-15.html">2026-10-15</a><a href="archive/2026-10-14.html">2026-10-14</a><a href="archive/2026-10-13.html">2026-10-13</a><a href="archive/2026-10-12.html">2026-10-12</a><a href="archive/2026-10-09.html">2026-10-09</a><a href="archive/2026-10-08.html">2026-10-08</a><a href="archive/2026-10-07.html">2026-10-07</a><a href="archive/2026-10-06.html">2026-10-06</a><a href="archive/2026-10-05.html">2026-10-05</a><a href="archive/2026-10-02.html">2026-10-02</a><a href="archive/2026-10-01.html">2026-10-01</a><a href="archive/2026-09-30.html">2026-09-30</a><a href="archive/2026-09-29.html">2026-09-29</a><a href="archive/2026-09-28.html">2026-09-28</a><a href="archive/2026-09-25.html">2026-09-25</a><a href="archive/2026-09-24.html">2026-09-24</a><a href="archive/2026-09-23.html">2026-09-23</a><a href="archive/2026-09-22.html">2026-09-22</a><a href="archive/2026-09-21.html">2026-09-21</a><a href="archive/2026-09-18.html">2026-09-18</a><a href="archive/2026-09-17.html">2026-09-17</a><a href="archive/2026-09-16.html">2026-09-16</a><a href="archive/2026-09-15.html">2026-09-15</a><a href="archive/2026-09-14.html">2026-09-14</a><a href="archive/2026-09-11.html">2026-09-11</a><a href="archive/2026-09-10.html">2026-09-10</a></p>
+    </div>
+  </div>
+  <footer>
+    Generato automaticamente da notizie pubbliche (Google News) e prezzi Yahoo Finance.
+    Non è consulenza finanziaria: sentiment, track record e size sono informazioni e aritmetica,
+    non un consiglio di acquisto o vendita — nessuna sezione di questa pagina ti dice cosa fare.
+    Verifica sempre le fonti originali prima di ogni decisione.
+  </footer>
+</div>
+</body>
+</html>
