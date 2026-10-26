@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Brief — 26/10/2026</title>
+<style>
+  :root {
+    --board-bg: #14171A; --board-line: #262B31; --paper-bg: #FAF8F3; --paper-line: #E4E0D6;
+    --ink: #1E2024; --ink-soft: #6B6A63; --ink-inv: #E9E7E0; --ink-inv-soft: #9AA0A6;
+    --pos: #4FAE7D; --neg: #D9584F; --flat: #9AA0A6; --amber: #C68A2E;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--paper-bg); color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:inherit; }
+  .wrap { max-width:920px; margin:0 auto; }
+  .board { background:var(--board-bg); color:var(--ink-inv); padding:28px 20px 22px; }
+  .eyebrow { font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-inv-soft); margin:0 0 10px; }
+  .headline { font-family:Georgia,"Iowan Old Style","Times New Roman",serif; font-size:26px;
+    line-height:1.35; margin:0 0 20px; max-width:640px; font-weight:500; }
+  .strip { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+  .chip { font-family:"SF Mono","IBM Plex Mono",Consolas,"Courier New",monospace; font-size:12.5px;
+    border:1px solid var(--board-line); border-radius:3px; padding:7px 10px; display:flex; gap:8px; align-items:baseline; }
+  .chip-name { color:var(--ink-inv-soft); }
+  .chip-price { color:var(--ink-inv); }
+  .chip.pos .chip-pct { color:var(--pos); }
+  .chip.neg .chip-pct { color:var(--neg); }
+  .chip.flat .chip-pct { color:var(--flat); }
+  table { width:100%; border-collapse:collapse; font-family:"SF Mono","IBM Plex Mono",Consolas,"Courier New",monospace; font-size:13px; }
+  .main-table { table-layout:fixed; }
+  .main-table th:nth-child(1), .main-table td:nth-child(1) { width:19%; }
+  .main-table th:nth-child(2), .main-table td:nth-child(2) { width:13%; }
+  .main-table th:nth-child(3), .main-table td:nth-child(3) { width:11%; }
+  .main-table th:nth-child(4), .main-table td:nth-child(4) { width:16%; }
+  .main-table th:nth-child(5), .main-table td:nth-child(5) { width:41%; }
+  td[data-label]::before { content:none; }
+  th { text-align:left; font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:11px; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--ink-inv-soft); font-weight:500; padding:0 10px 10px; border-bottom:1px solid var(--board-line); }
+  td { padding:12px 10px; border-bottom:1px solid var(--board-line); vertical-align:top; }
+  .tk { font-weight:600; white-space:nowrap; }
+  .tk-name { font-family:-apple-system,"Segoe UI",Roboto,sans-serif; color:var(--ink-inv-soft); font-size:11px; font-weight:400; }
+  .num { text-align:right; white-space:nowrap; }
+  .pos { color:var(--pos); } .neg { color:var(--neg); } .flat { color:var(--flat); }
+  .news { font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:12.5px; color:var(--ink-inv); }
+  .news a { text-decoration:underline; text-decoration-color:var(--board-line); }
+  .src { color:var(--ink-inv-soft); }
+  .flag { font-size:11px; color:var(--amber); font-family:-apple-system,"Segoe UI",Roboto,sans-serif; margin-left:4px; }
+  .paper { padding:30px 20px 40px; }
+  .paper h2 { font-family:Georgia,"Iowan Old Style","Times New Roman",serif; font-size:19px; margin:0 0 16px; }
+  .paper th { color:var(--ink-soft); }
+  .paper .src, .paper .tk-name { color:var(--ink-soft); }
+  .trend { font-weight:700; margin-left:2px; }
+  .section { margin-bottom:36px; }
+  .tr-grid { display:flex; gap:14px; flex-wrap:wrap; }
+  .tr-card { flex:1; min-width:160px; border:1px solid var(--paper-line); border-radius:8px; padding:14px 16px; }
+  .tr-label { font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin-bottom:8px; }
+  .tr-stat { font-family:"SF Mono","IBM Plex Mono",Consolas,"Courier New",monospace; font-size:30px; font-weight:600; line-height:1; margin-bottom:8px; }
+  .tr-sub { font-size:12px; color:var(--ink-soft); line-height:1.6; }
+  .size-table th, .size-table td { border-bottom:1px solid var(--paper-line); }
+  .macro-block { margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--paper-line); }
+  .macro-block:last-child { border-bottom:none; }
+  .macro-block h3 { font-size:14px; margin:0 0 8px; font-weight:600; }
+  .tag { font-size:10.5px; font-weight:500; padding:2px 7px; border-radius:10px; margin-left:6px; letter-spacing:.02em; }
+  .tag.pos { background:rgba(79,174,125,.15); color:#2F7B4F; }
+  .tag.neg { background:rgba(217,88,79,.15); color:#A63A2E; }
+  .tag.flat { background:rgba(154,160,166,.18); color:#6B6A63; }
+  .macro-block ul { margin:0; padding-left:18px; color:var(--ink-soft); font-size:13.5px; line-height:1.7; }
+  .macro-block a { text-decoration-color:var(--paper-line); }
+  .archive { font-size:12.5px; color:var(--ink-soft); }
+  .archive a { margin-right:12px; display:inline-block; text-decoration-color:var(--paper-line); }
+  footer { padding:20px 20px 40px; font-size:12px; color:var(--ink-soft); line-height:1.6; border-top:1px solid var(--paper-line); }
+  @media (max-width:640px) {
+    table, thead, tbody, th, td, tr { display:block; width:auto !important; }
+    thead { display:none; }
+    tr { padding:12px 0; border-bottom:1px solid var(--board-line); }
+    tbody tr:last-child { border-bottom:none; }
+    td { border:none; padding:3px 0; }
+    td[data-label]::before { content:attr(data-label) ": "; color:var(--ink-inv-soft);
+      font-family:-apple-system,"Segoe UI",Roboto,sans-serif; font-size:11px; }
+    td.tk[data-label]::before { content:none; }
+    .num { text-align:left; }
+    .headline { font-size:22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="board">
+    <p class="eyebrow">Market Brief &middot; Monday 26 October 2026, 13:23 CET</p>
+    <p class="headline">Il tono delle notizie è contrastato, senza una direzione chiara.</p>
+    <div class="strip"><div class="chip neg"><span class="chip-name">S&amp;P 500</span><span class="chip-price">7,623.68</span><span class="chip-pct">-0.52%</span></div><div class="chip neg"><span class="chip-name">Nasdaq Composite</span><span class="chip-price">25,955.34</span><span class="chip-pct">-0.21%</span></div><div class="chip neg"><span class="chip-name">Dow Jones</span><span class="chip-price">52,215.16</span><span class="chip-pct">-1.23%</span></div><div class="chip pos"><span class="chip-name">Euro Stoxx 50</span><span class="chip-price">6,111.38</span><span class="chip-pct">+0.71%</span></div><div class="chip pos"><span class="chip-name">FTSE MIB</span><span class="chip-price">49,079.21</span><span class="chip-pct">+1.07%</span></div><div class="chip pos"><span class="chip-name">Bitcoin</span><span class="chip-price">80,151.78</span><span class="chip-pct">+0.16%</span></div><div class="chip neg"><span class="chip-name">Ethereum</span><span class="chip-price">2,325.00</span><span class="chip-pct">-0.08%</span></div></div>
+    <table class="main-table">
+      <thead><tr><th>Titolo</th><th>Prezzo</th><th>Var.</th><th>Sentiment notizie</th><th>Notizia principale</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tk" data-label="Titolo">AAPL<div class="tk-name">Apple</div></td>
+          <td class="num" data-label="Prezzo">347.73</td>
+          <td class="num neg" data-label="Var.">-0.14%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MSFT<div class="tk-name">Microsoft</div></td>
+          <td class="num" data-label="Prezzo">524.51</td>
+          <td class="num pos" data-label="Var.">+0.66%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">GOOGL<div class="tk-name">Alphabet</div></td>
+          <td class="num" data-label="Prezzo">320.21</td>
+          <td class="num neg" data-label="Var.">-1.24%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">AMZN<div class="tk-name">Amazon</div></td>
+          <td class="num" data-label="Prezzo">248.00</td>
+          <td class="num neg" data-label="Var.">-0.95%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">NVDA<div class="tk-name">Nvidia</div></td>
+          <td class="num" data-label="Prezzo">210.96</td>
+          <td class="num neg" data-label="Var.">-0.59%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">META<div class="tk-name">Meta</div></td>
+          <td class="num" data-label="Prezzo">642.62</td>
+          <td class="num neg" data-label="Var.">-0.96%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">TSLA<div class="tk-name">Tesla</div></td>
+          <td class="num" data-label="Prezzo">372.22</td>
+          <td class="num neg" data-label="Var.">-0.63%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">JPM<div class="tk-name">JPMorgan</div></td>
+          <td class="num" data-label="Prezzo">331.58</td>
+          <td class="num neg" data-label="Var.">-1.47%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">XOM<div class="tk-name">ExxonMobil</div></td>
+          <td class="num" data-label="Prezzo">183.21</td>
+          <td class="num pos" data-label="Var.">+2.79%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ASML.AS<div class="tk-name">ASML</div></td>
+          <td class="num" data-label="Prezzo">1,425.20</td>
+          <td class="num pos" data-label="Var.">+1.41%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MC.PA<div class="tk-name">LVMH</div></td>
+          <td class="num" data-label="Prezzo">387.05</td>
+          <td class="num pos" data-label="Var.">+1.06%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">SAP.DE<div class="tk-name">SAP</div></td>
+          <td class="num" data-label="Prezzo">214.30</td>
+          <td class="num flat" data-label="Var.">-0.05%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ENI.MI<div class="tk-name">Eni</div></td>
+          <td class="num" data-label="Prezzo">26.80</td>
+          <td class="num neg" data-label="Var.">-3.07%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">UCG.MI<div class="tk-name">UniCredit</div></td>
+          <td class="num" data-label="Prezzo">73.74</td>
+          <td class="num pos" data-label="Var.">+2.36%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">BTC-USD<div class="tk-name">Bitcoin</div></td>
+          <td class="num" data-label="Prezzo">80,152.91</td>
+          <td class="num pos" data-label="Var.">+0.16%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ETH-USD<div class="tk-name">Ethereum</div></td>
+          <td class="num" data-label="Prezzo">2,325.12</td>
+          <td class="num neg" data-label="Var.">-0.08%</td>
+          <td class="flat" data-label="Sentiment">Misto <span class="trend flat" title="stabile sulle ultime 5 esecuzioni">–</span> </td>
+          <td class="news" data-label="Notizia principale"><span class="src">nessuna notizia recente</span></td>
+        </tr></tbody>
+    </table>
+  </div>
+  <div class="paper">
+    <div class="section">
+      <h2>Eventi macro di oggi</h2>
+      
+        <div class="macro-block">
+          <h3>Federal Reserve interest rates <span class="tag flat">Misto</span></h3>
+          <ul><li class='src'>Nessuna notizia trovata per questo tema oggi.</li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>European Central Bank policy <span class="tag flat">Misto</span></h3>
+          <ul><li class='src'>Nessuna notizia trovata per questo tema oggi.</li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>stock market today <span class="tag flat">Misto</span></h3>
+          <ul><li class='src'>Nessuna notizia trovata per questo tema oggi.</li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>geopolitical risk markets oil <span class="tag flat">Misto</span></h3>
+          <ul><li class='src'>Nessuna notizia trovata per questo tema oggi.</li></ul>
+        </div>
+        <div class="macro-block">
+          <h3>inflation report markets <span class="tag flat">Misto</span></h3>
+          <ul><li class='src'>Nessuna notizia trovata per questo tema oggi.</li></ul>
+        </div>
+    </div>
+    <div class="section">
+      <h2>Track record del segnale</h2>
+      <div class="tr-grid">
+        <div class="tr-card">
+          <div class="tr-label">Positivo</div>
+          <div class="tr-stat pos">53%</div>
+          <div class="tr-sub">direzione indovinata su 255 segnali</div>
+          <div class="tr-sub">rendimento medio: +0.51%</div>
+        </div>
+        <div class="tr-card">
+          <div class="tr-label">Negativo</div>
+          <div class="tr-stat neg">42%</div>
+          <div class="tr-sub">direzione indovinata su 165 segnali</div>
+          <div class="tr-sub">rendimento medio: +1.45%</div>
+        </div></div>
+    </div>
+    <div class="section">
+      <h2>Calcolatore di size</h2>
+      
+    <table class="size-table">
+      <thead><tr><th>Titolo</th><th>Size</th><th>Azioni</th><th>Stop ipotetico</th><th>Controvalore</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="tk" data-label="Titolo">AAPL</td>
+          <td class="num" data-label="Size">28.1% del capitale</td>
+          <td class="num" data-label="Azioni">8.08</td>
+          <td class="num" data-label="Stop ipotetico">3.6%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,811</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MSFT</td>
+          <td class="num" data-label="Size">23.8% del capitale</td>
+          <td class="num" data-label="Azioni">4.53</td>
+          <td class="num" data-label="Stop ipotetico">4.2%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,375</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">GOOGL</td>
+          <td class="num" data-label="Size">19.1% del capitale</td>
+          <td class="num" data-label="Azioni">5.96</td>
+          <td class="num" data-label="Stop ipotetico">5.2%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,909</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">AMZN</td>
+          <td class="num" data-label="Size">17.5% del capitale</td>
+          <td class="num" data-label="Azioni">7.06</td>
+          <td class="num" data-label="Stop ipotetico">5.7%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,750</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">NVDA</td>
+          <td class="num" data-label="Size">17.6% del capitale</td>
+          <td class="num" data-label="Azioni">8.36</td>
+          <td class="num" data-label="Stop ipotetico">5.7%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,765</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">META</td>
+          <td class="num" data-label="Size">12.7% del capitale</td>
+          <td class="num" data-label="Azioni">1.98</td>
+          <td class="num" data-label="Stop ipotetico">7.9%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,271</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">TSLA</td>
+          <td class="num" data-label="Size">15.9% del capitale</td>
+          <td class="num" data-label="Azioni">4.27</td>
+          <td class="num" data-label="Stop ipotetico">6.3%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,590</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">JPM</td>
+          <td class="num" data-label="Size">26.0% del capitale</td>
+          <td class="num" data-label="Azioni">7.85</td>
+          <td class="num" data-label="Stop ipotetico">3.8%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,602</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">XOM</td>
+          <td class="num" data-label="Size">23.3% del capitale</td>
+          <td class="num" data-label="Azioni">12.74</td>
+          <td class="num" data-label="Stop ipotetico">4.3%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,333</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ASML.AS</td>
+          <td class="num" data-label="Size">13.0% del capitale</td>
+          <td class="num" data-label="Azioni">0.91</td>
+          <td class="num" data-label="Stop ipotetico">7.7%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,300</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">MC.PA</td>
+          <td class="num" data-label="Size">23.9% del capitale</td>
+          <td class="num" data-label="Azioni">6.16</td>
+          <td class="num" data-label="Stop ipotetico">4.2%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,386</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">SAP.DE</td>
+          <td class="num" data-label="Size">18.2% del capitale</td>
+          <td class="num" data-label="Azioni">8.51</td>
+          <td class="num" data-label="Stop ipotetico">5.5%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,825</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ENI.MI</td>
+          <td class="num" data-label="Size">21.5% del capitale</td>
+          <td class="num" data-label="Azioni">80.23</td>
+          <td class="num" data-label="Stop ipotetico">4.7%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 2,150</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">UCG.MI</td>
+          <td class="num" data-label="Size">17.1% del capitale</td>
+          <td class="num" data-label="Azioni">23.16</td>
+          <td class="num" data-label="Stop ipotetico">5.9%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,708</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">BTC-USD</td>
+          <td class="num" data-label="Size">19.8% del capitale</td>
+          <td class="num" data-label="Azioni">0.02</td>
+          <td class="num" data-label="Stop ipotetico">5.0%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,984</td>
+        </tr>
+        <tr>
+          <td class="tk" data-label="Titolo">ETH-USD</td>
+          <td class="num" data-label="Size">12.4% del capitale</td>
+          <td class="num" data-label="Azioni">0.53</td>
+          <td class="num" data-label="Stop ipotetico">8.0%<div class="tk-name">2.0× ATR</div></td>
+          <td class="num" data-label="Controvalore">EUR 1,243</td>
+        </tr></tbody>
+    </table>
+    <p class="src" style="margin-top:12px;">
+      Calcolo aritmetico sui TUOI parametri (capitale EUR 10,000,
+      rischio 1.0% a operazione). Lo stop ipotetico usa l'ATR (volatilità reale
+      delle ultime settimane) per ogni titolo quando disponibile, invece di un numero identico per tutti —
+      altrimenti torna al valore fisso in "default_stop_loss_pct". Non è collegato al sentiment del giorno
+      e non è un consiglio su quale titolo aprire. Modifica i parametri in watchlist.json con i tuoi numeri
+      reali; sono placeholder finché non lo fai.
+    </p>
+    </div>
+    <div class="section">
+      <h2>Report precedenti</h2>
+      <p class="archive"><a href="archive/2026-10-23.html">2026-10-23</a><a href="archive/2026-10-22.html">2026-10-22</a><a href="archive/2026-10-21.html">2026-10-21</a><a href="archive/2026-10-20.html">2026-10-20</a><a href="archive/2026-10-19.html">2026-10-19</a><a href="archive/2026-10-16.html">2026-10-16</a><a href="archive/2026-10-15.html">2026-10-15</a><a href="archive/2026-10-14.html">2026-10-14</a><a href="archive/2026-10-13.html">2026-10-13</a><a href="archive/2026-10-12.html">2026-10-12</a><a href="archive/2026-10-09.html">2026-10-09</a><a href="archive/2026-10-08.html">2026-10-08</a><a href="archive/2026-10-07.html">2026-10-07</a><a href="archive/2026-10-06.html">2026-10-06</a><a href="archive/2026-10-05.html">2026-10-05</a><a href="archive/2026-10-02.html">2026-10-02</a><a href="archive/2026-10-01.html">2026-10-01</a><a href="archive/2026-09-30.html">2026-09-30</a><a href="archive/2026-09-29.html">2026-09-29</a><a href="archive/2026-09-28.html">2026-09-28</a><a href="archive/2026-09-25.html">2026-09-25</a><a href="archive/2026-09-24.html">2026-09-24</a><a href="archive/2026-09-23.html">2026-09-23</a><a href="archive/2026-09-22.html">2026-09-22</a><a href="archive/2026-09-21.html">2026-09-21</a><a href="archive/2026-09-18.html">2026-09-18</a><a href="archive/2026-09-17.html">2026-09-17</a><a href="archive/2026-09-16.html">2026-09-16</a><a href="archive/2026-09-15.html">2026-09-15</a><a href="archive/2026-09-14.html">2026-09-14</a></p>
+    </div>
+  </div>
+  <footer>
+    Generato automaticamente da notizie pubbliche (Google News) e prezzi Yahoo Finance.
+    Non è consulenza finanziaria: sentiment, track record e size sono informazioni e aritmetica,
+    non un consiglio di acquisto o vendita — nessuna sezione di questa pagina ti dice cosa fare.
+    Verifica sempre le fonti originali prima di ogni decisione.
+  </footer>
+</div>
+</body>
+</html>
